@@ -25,22 +25,28 @@ import org.outerj.daisy.diff.html.modification.HtmlLayoutChange;
 import org.outerj.daisy.diff.html.modification.HtmlLayoutChange.Type;
 import org.xml.sax.Attributes;
 
+import sk.iway.iwcm.RequestBean;
+import sk.iway.iwcm.SetCharacterEncodingFilter;
+import sk.iway.iwcm.i18n.Prop;
+
 public class TagToString {
 
     protected TagNode node;
 
     protected TagChangeSematic sem;
 
-    private ResourceBundle bundle;
-    
     private HtmlLayoutChange htmlLayoutChange = null;
 
+    private Prop prop;
+    
     protected TagToString(TagNode node, TagChangeSematic sem,
             ResourceBundle bundle) {
         this.node = node;
         this.sem = sem;
-        this.bundle = bundle;
         
+        RequestBean rb = SetCharacterEncodingFilter.getCurrentRequestBean();
+        if (rb != null) prop = Prop.getInstance(rb.getLng());
+        else prop = Prop.getInstance();        
     }
 
     public String getDescription() {
@@ -181,7 +187,7 @@ public class TagToString {
 
     public String getString(String key) {
         try {
-            return bundle.getString(key);
+            return prop.getText("daisydiff."+key);
         } catch (MissingResourceException e) {
             return '!' + key + '!';
         }

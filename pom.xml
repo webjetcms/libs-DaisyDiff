@@ -26,16 +26,20 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- https://mvnrepository.com/artifact/net.sourceforge.nekohtml/nekohtml -->
       <dependency>
-        <groupId>org.cyberneko</groupId>
-        <artifactId>html</artifactId>
-        <version>1.9.8</version>
+        <groupId>net.sourceforge.nekohtml</groupId>
+        <artifactId>nekohtml</artifactId>
+        <version>1.9.22</version>
       </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.eclipse.core/org.eclipse.core.runtime -->
       <dependency>
-        <groupId>org.eclipse.core.runtime</groupId>
-        <artifactId>eclipse-core-runtime</artifactId>
-        <version>20070801</version>
+        <groupId>org.eclipse.core</groupId>
+        <artifactId>org.eclipse.core.runtime</artifactId>
+        <version>3.6.0.v20100505</version>
       </dependency>
+
       <dependency>
         <groupId>xerces</groupId>
         <artifactId>xercesImpl</artifactId>
@@ -51,14 +55,18 @@
 
   <dependencies>
 
+    <!-- https://mvnrepository.com/artifact/net.sourceforge.nekohtml/nekohtml -->
     <dependency>
-      <groupId>org.cyberneko</groupId>
-      <artifactId>html</artifactId>
+      <groupId>net.sourceforge.nekohtml</groupId>
+      <artifactId>nekohtml</artifactId>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.eclipse.core/org.eclipse.core.runtime -->
     <dependency>
-      <groupId>org.eclipse.core.runtime</groupId>
-      <artifactId>eclipse-core-runtime</artifactId>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>org.eclipse.core.runtime</artifactId>
     </dependency>
+
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
