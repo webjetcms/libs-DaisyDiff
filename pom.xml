@@ -3,9 +3,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.outerj.daisy</groupId>
-  <artifactId>daisydiff</artifactId>
-  <version>1.2-NX5-SNAPSHOT</version>
+  <groupId>sk.iway</groupId>
+  <artifactId>wjdaisydiff</artifactId>
+  <version>1.1-SNAPSHOT</version>
   <name>Daisydiff</name>
   <description>
     A Java library to compare HTML files.
@@ -27,10 +27,17 @@
   <dependencyManagement>
     <dependencies>
       <!-- https://mvnrepository.com/artifact/net.sourceforge.nekohtml/nekohtml -->
-      <dependency>
+      <!--dependency>
         <groupId>net.sourceforge.nekohtml</groupId>
         <artifactId>nekohtml</artifactId>
         <version>1.9.22</version>
+      </dependency-->
+
+      <!-- https://mvnrepository.com/artifact/org.htmlunit/neko-htmlunit -->
+      <dependency>
+        <groupId>org.htmlunit</groupId>
+        <artifactId>neko-htmlunit</artifactId>
+        <version>4.5.0</version>
       </dependency>
 
       <!-- https://mvnrepository.com/artifact/org.eclipse.core/org.eclipse.core.runtime -->
@@ -40,11 +47,11 @@
         <version>3.6.0.v20100505</version>
       </dependency>
 
-      <dependency>
+      <!--dependency>
         <groupId>xerces</groupId>
         <artifactId>xercesImpl</artifactId>
         <version>2.12.0</version>
-      </dependency>
+      </dependency-->
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
@@ -56,10 +63,17 @@
   <dependencies>
 
     <!-- https://mvnrepository.com/artifact/net.sourceforge.nekohtml/nekohtml -->
-    <dependency>
+    <!--dependency>
       <groupId>net.sourceforge.nekohtml</groupId>
       <artifactId>nekohtml</artifactId>
+    </dependency-->
+    <!-- https://mvnrepository.com/artifact/org.htmlunit/neko-htmlunit -->
+    <dependency>
+      <groupId>org.htmlunit</groupId>
+      <artifactId>neko-htmlunit</artifactId>
+      <version>4.5.0</version>
     </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/org.eclipse.core/org.eclipse.core.runtime -->
     <dependency>
@@ -67,9 +81,26 @@
       <artifactId>org.eclipse.core.runtime</artifactId>
     </dependency>
 
-    <dependency>
+    <!--dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
+    </dependency-->
+
+    <!-- Compile -->
+    <!-- https://mvnrepository.com/artifact/com.webjetcms/webjetcms -->
+    <dependency>
+      <groupId>com.webjetcms</groupId>
+      <artifactId>webjetcms</artifactId>
+      <version>2024.40</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.webjetcms</groupId>
+      <artifactId>webjetcms</artifactId>
+      <version>2024.40</version>
+      <scope>compile</scope>
+      <classifier>libs</classifier>
     </dependency>
 
     <!-- Test -->
@@ -102,7 +133,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>2.4.2</version>
+          <version>3.2.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -117,8 +148,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
       <plugin>
@@ -170,28 +201,16 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <!-- merge services files -->
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"></transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"></transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>org.outerj.daisy.diff.Main</mainClass>
-                </transformer>
-                <!-- <transformer -->
-                <!-- implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer"> -->
-                <!-- <addHeader>false</addHeader> -->
-                <!-- </transformer> -->
-              </transformers>
-              <!-- <createSourcesJar>true</createSourcesJar> -->
-              <!-- <shadeSourcesContent>true</shadeSourcesContent> -->
-              <createDependencyReducedPom>true</createDependencyReducedPom>
-              <!-- <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope> -->
-              <!-- <promoteTransitiveDependencies>false</promoteTransitiveDependencies> -->
               <shadedArtifactAttached>true</shadedArtifactAttached>
-              <shadedClassifierName>shaded</shadedClassifierName>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>com.baeldung.executable.ExecutableMavenJar</mainClass>
+                </transformer>
+              </transformers>
               <artifactSet>
                 <includes>
-                  <include>org.eclipse.core.runtime:eclipse-core-runtime</include>
+                  <!--include>org.htmlunit:*</include-->
+                  <include>org.eclipse.core:org.eclipse.core.runtime</include>
                 </includes>
               </artifactSet>
               <filters>
@@ -204,12 +223,6 @@
                   </excludes>
                 </filter>
               </filters>
-              <relocations>
-                <relocation>
-                  <pattern>org/eclipse/core</pattern>
-                  <shadedPattern>hidden/org/eclipse/core</shadedPattern>
-                </relocation>
-              </relocations>
             </configuration>
           </execution>
         </executions>
@@ -263,6 +276,14 @@
       <releases>
         <enabled>false</enabled>
       </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>pd4ml</id>
+      <name>PD4ML Repository</name>
+      <url>https://pd4ml.tech/maven2/</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
