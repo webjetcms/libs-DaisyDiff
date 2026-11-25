@@ -31,7 +31,7 @@ import org.xml.sax.InputSource;
 
 /**
  * TestCase for HTML diffing. Can be used in unit tests. See HTMLDifferText for example.
- * 
+ *
  * @author kapelonk
  * @version 04 Jul 2011
  *
@@ -44,11 +44,11 @@ public class HtmlTestFixture {
 	private HtmlTestFixture() {
 		// Disabled
 	}
-	
+
 	/**
 	 * Performs HTML diffing on two HTML strings. Notice that the input strings
 	 * are "cleaned-up" first (e.g. all html tags are converted to lowercase).
-	 * 
+	 *
 	 * @param first
 	 *            original html text
 	 * @param second
@@ -67,12 +67,12 @@ public class HtmlTestFixture {
         result.getTransformer().setOutputProperty(OutputKeys.METHOD, "html");
         result.getTransformer().setOutputProperty(OutputKeys.ENCODING, TestHelper.ENCODING);
         result.setResult(new StreamResult(finalResult));
-        
+
         ContentHandler postProcess = result;
-        
+
         Locale locale = Locale.getDefault();
         String prefix = "diff";
-        
+
         NekoHtmlParser cleaner = new NekoHtmlParser();
 
         InputSource oldSource = new InputSource(new StringReader(
@@ -92,7 +92,7 @@ public class HtmlTestFixture {
 
         HtmlSaxDiffOutput output = new HtmlSaxDiffOutput(postProcess,
                 prefix);
-        
+
         //Debug code
 //        LCSSettings settings = new LCSSettings();
 //        settings.setUseGreedyMethod(false);
@@ -103,19 +103,21 @@ public class HtmlTestFixture {
 //                settings, leftComparator, rightComparator);
 //        LOG.info(">>>>Number of diffs is "+differences.length);
         //End of debug code
-        
+
         HTMLDiffer differ = new HTMLDiffer(output);
         differ.diff(leftComparator, rightComparator);
-        
-        return finalResult.toString();
 
+        String wjresult = finalResult.toString();
+		//remove formatting
+		//wjresult = wjresult.replaceAll("\n    ", "");
+		return wjresult;
 	}
-	
+
 	/**
 	 * Performs HTML diffing on two HTML strings. Notice that the input strings
 	 * are "cleaned-up" first (e.g. all html tags are converted to lowercase).
-	 * 
-	 * @param ancestor 
+	 *
+	 * @param ancestor
 	 * 	          the ancestor html text of the two first and second html texts
 	 * @param first
 	 *            original html text
@@ -135,39 +137,39 @@ public class HtmlTestFixture {
         result.getTransformer().setOutputProperty(OutputKeys.METHOD, "html");
         result.getTransformer().setOutputProperty(OutputKeys.ENCODING, TestHelper.ENCODING);
         result.setResult(new StreamResult(finalResult));
-		
+
 		ContentHandler postProcess = result;
-		
+
 		Locale locale = Locale.getDefault();
 		String prefix = "diff";
-		
+
 		NekoHtmlParser cleaner = new NekoHtmlParser();
-		
+
 		InputSource ancestorSource = new InputSource(new StringReader(
 				ancestor));
 		InputSource oldSource = new InputSource(new StringReader(
 				first));
 		InputSource newSource = new InputSource(new StringReader(
 				second));
-		
+
 		DomTreeBuilder ancestorHandler = new DomTreeBuilder();
 		cleaner.parse(ancestorSource, ancestorHandler);
 		TextNodeComparator ancestorComparator = new TextNodeComparator(
 				ancestorHandler, locale);
-		
+
 		DomTreeBuilder oldHandler = new DomTreeBuilder();
 		cleaner.parse(oldSource, oldHandler);
 		TextNodeComparator leftComparator = new TextNodeComparator(
 				oldHandler, locale);
-		
+
 		DomTreeBuilder newHandler = new DomTreeBuilder();
 		cleaner.parse(newSource, newHandler);
 		TextNodeComparator rightComparator = new TextNodeComparator(
 				newHandler, locale);
-		
+
 		HtmlSaxDiffOutput output = new HtmlSaxDiffOutput(postProcess,
 				prefix);
-		
+
 		//Debug code
 //        LCSSettings settings = new LCSSettings();
 //        settings.setUseGreedyMethod(false);
@@ -178,10 +180,10 @@ public class HtmlTestFixture {
 //                settings, leftComparator, rightComparator);
 //        LOG.info(">>>>Number of diffs is "+differences.length);
 		//End of debug code
-		
+
 		HTMLDiffer differ = new HTMLDiffer(output);
 		differ.diff(ancestorComparator, leftComparator, rightComparator);
-		
+
 		return finalResult.toString();
 	}
 }

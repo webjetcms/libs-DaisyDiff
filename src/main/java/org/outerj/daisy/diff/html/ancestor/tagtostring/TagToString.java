@@ -25,28 +25,39 @@ import org.outerj.daisy.diff.html.modification.HtmlLayoutChange;
 import org.outerj.daisy.diff.html.modification.HtmlLayoutChange.Type;
 import org.xml.sax.Attributes;
 
+import sk.iway.iwcm.Constants;
+import sk.iway.iwcm.RequestBean;
+import sk.iway.iwcm.SetCharacterEncodingFilter;
+import sk.iway.iwcm.i18n.Prop;
+
 public class TagToString {
 
     protected TagNode node;
 
     protected TagChangeSematic sem;
 
-    private ResourceBundle bundle;
-    
     private HtmlLayoutChange htmlLayoutChange = null;
+
+    private Prop prop = null;
+    private ResourceBundle bundle;
 
     protected TagToString(TagNode node, TagChangeSematic sem,
             ResourceBundle bundle) {
         this.node = node;
         this.sem = sem;
         this.bundle = bundle;
-        
+
+        if (Constants.getServletContext()!=null) {
+            RequestBean rb = SetCharacterEncodingFilter.getCurrentRequestBean();
+            if (rb != null) prop = Prop.getInstance(rb.getLng());
+            else prop = Prop.getInstance();
+        }
     }
 
     public String getDescription() {
-    	
+
         return getString("diff-" + node.getQName());
-        
+
     }
 
     public void getRemovedDescription(ChangeText txt) {
@@ -181,6 +192,7 @@ public class TagToString {
 
     public String getString(String key) {
         try {
+            if (prop != null) return prop.getText("daisydiff."+key);
             return bundle.getString(key);
         } catch (MissingResourceException e) {
             return '!' + key + '!';
@@ -193,7 +205,5 @@ public class TagToString {
 	public HtmlLayoutChange getHtmlLayoutChange() {
 		return htmlLayoutChange;
 	}
-    
-    
 
 }
