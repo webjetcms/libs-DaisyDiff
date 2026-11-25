@@ -1,3 +1,4 @@
 #!/bin/sh
 
-mvn package
+cd "$(dirname "$0")" || exit 1
+exec mvn clean package "$@"
